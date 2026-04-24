@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchBlogs } from "../features/blog/blogSlice";
 import BlogCard from "./BlogCard";
 import AddEditModal from "./AddEditModal";
+import bg from "../assets/bg2.jpg";
 
 const BlogList = () => {
   const dispatch = useDispatch();
   const { blogs, loading } = useSelector((state) => state.blog);
-  
+
   const [show, setShow] = useState(false);
   const [editData, setEditData] = useState(null);
 
@@ -26,35 +27,47 @@ const BlogList = () => {
   };
 
   return (
-    <div className="container mt-3">
-      {/* Top Left Button */}
-      <button className="floating-btn" onClick={handleAdd}>
-        + Add Post
-      </button>
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        backgroundImage: `url(${bg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        zIndex: -1,
+      }}
+    >
+      {/* Your real UI */}
+      <div className="container mt-3 blog-wrapper">
+        {/* Top Left Button */}
+        <button className="floating-btn" onClick={handleAdd}>
+          +
+        </button>
 
-      {loading ? (
-        <div className="row">
-          {[...Array(6)].map((_, i) => (
-            <div className="col-md-4 mb-3" key={i}>
-              <div className="skeleton-card"></div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="row">
-          {blogs.map((blog) => (
-            <div className="col-md-4 col-sm-6 mb-3" key={blog.id}>
-              <BlogCard blog={blog} onEdit={handleEdit} />
-            </div>
-          ))}
-        </div>
-      )}
+        {loading ? (
+          <div className="row">
+            {[...Array(6)].map((_, i) => (
+              <div className="col-md-4 mb-3" key={i}>
+                <div className="skeleton-card"></div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="row">
+            {blogs.map((blog) => (
+              <div className="col-md-4 col-sm-6 mb-3" key={blog.id}>
+                <BlogCard blog={blog} onEdit={handleEdit} />
+              </div>
+            ))}
+          </div>
+        )}
 
-      <AddEditModal
-        show={show}
-        handleClose={() => setShow(false)}
-        editData={editData}
-      />
+        <AddEditModal
+          show={show}
+          handleClose={() => setShow(false)}
+          editData={editData}
+        />
+      </div>
     </div>
   );
 };
