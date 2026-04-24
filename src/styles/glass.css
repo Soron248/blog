@@ -1,0 +1,22 @@
+.glass-card {
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 16px;
+  color: white;
+  transition: 0.3s;
+}
+
+.glass-card:hover {
+  transform: translateY(-5px);
+}
+
+.glass-btn {
+  backdrop-filter: blur(10px);
+  background: rgba(0, 123, 255, 0.3);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 12px;
+  color: white;
+}
