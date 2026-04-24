@@ -10,6 +10,12 @@ const BlogCard = ({ blog, onEdit }) => {
     ? `${process.env.REACT_APP_BASE_URL}/${blog.imagePath}`
     : null;
 
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure?")) {
+      dispatch(deleteBlog(id));
+    }
+  };
+
   return (
     <div className="glass-card">
       {imageUrl && (
@@ -28,10 +34,7 @@ const BlogCard = ({ blog, onEdit }) => {
         <button className="glass-btn" onClick={() => onEdit(blog)}>
           Edit
         </button>
-        <button
-          className="glass-btn"
-          onClick={() => dispatch(deleteBlog(blog.id))}
-        >
+        <button className="glass-btn" onClick={() => handleDelete(blog.id)}>
           Delete
         </button>
       </div>

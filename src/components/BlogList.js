@@ -6,8 +6,8 @@ import AddEditModal from "./AddEditModal";
 
 const BlogList = () => {
   const dispatch = useDispatch();
-  const blogs = useSelector((state) => state.blog.blogs);
-
+  const { blogs, loading } = useSelector((state) => state.blog);
+  
   const [show, setShow] = useState(false);
   const [editData, setEditData] = useState(null);
 
@@ -27,19 +27,28 @@ const BlogList = () => {
 
   return (
     <div className="container mt-3">
-
       {/* Top Left Button */}
-      <button className="glass-btn mb-3" onClick={handleAdd}>
+      <button className="floating-btn" onClick={handleAdd}>
         + Add Post
       </button>
 
-      <div className="row">
-        {blogs.map((blog) => (
-          <div className="col-md-4 col-sm-6 mb-3" key={blog.id}>
-            <BlogCard blog={blog} onEdit={handleEdit} />
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <div className="row">
+          {[...Array(6)].map((_, i) => (
+            <div className="col-md-4 mb-3" key={i}>
+              <div className="skeleton-card"></div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="row">
+          {blogs.map((blog) => (
+            <div className="col-md-4 col-sm-6 mb-3" key={blog.id}>
+              <BlogCard blog={blog} onEdit={handleEdit} />
+            </div>
+          ))}
+        </div>
+      )}
 
       <AddEditModal
         show={show}
