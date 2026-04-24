@@ -34,15 +34,14 @@ const BlogList = () => {
         backgroundImage: `url(${bg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        zIndex: -1,
       }}
     >
       {/* Your real UI */}
-      <div className="container mt-3 blog-wrapper">
+      <div className="container mt-3 ">
         {/* Top Left Button */}
-        <button className="floating-btn" onClick={handleAdd}>
-          +
-        </button>
+        <span className="floating-btn" onClick={handleAdd}>
+         +
+        </span>
 
         {loading ? (
           <div className="row">

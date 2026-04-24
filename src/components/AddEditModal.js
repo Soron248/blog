@@ -14,6 +14,15 @@ const AddEditModal = ({ show, handleClose, editData }) => {
     image: null,
   });
   const [preview, setPreview] = useState(null);
+  const titles = [
+    "Wow, you again? Let’s save another memory ✨",
+    "Captured another beautiful moment 📸",
+    "Alright, let’s store something special 💙",
+    "Another story coming alive... 🌿",
+    "Let’s freeze this moment in time ⏳",
+  ];
+
+  const [modalTitle, setModalTitle] = useState("");
 
   useEffect(() => {
     if (editData) {
@@ -25,6 +34,13 @@ const AddEditModal = ({ show, handleClose, editData }) => {
       });
     }
   }, [editData]);
+
+  useEffect(() => {
+    if (show) {
+      const random = titles[Math.floor(Math.random() * titles.length)];
+      setModalTitle(random);
+    }
+  }, [show]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -55,6 +71,14 @@ const AddEditModal = ({ show, handleClose, editData }) => {
         toast.success("Blog updated successfully!");
       } else {
         await dispatch(createBlog(formData)).unwrap();
+        // Reset form after successful creation
+        setForm({
+          title: "",
+          description: "",
+          location: "",
+          image: null,
+        });
+        setPreview(null);
         toast.success("Blog created successfully!");
       }
 
@@ -65,12 +89,17 @@ const AddEditModal = ({ show, handleClose, editData }) => {
   };
 
   return (
-    <Modal show={show} onHide={handleClose} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>{editData ? "Edit Blog" : "Add Blog"}</Modal.Title>
+    <Modal
+      show={show}
+      onHide={handleClose}
+      centered
+      dialogClassName="glass-modal"
+    >
+      <Modal.Header closeButton className="glass-header">
+        <Modal.Title>{editData ? "✏️ Edit Blog" : modalTitle}</Modal.Title>
       </Modal.Header>
 
-      <Modal.Body>
+      <Modal.Body className="glass-body">
         <Form>
           <Form.Group>
             <Form.Label>Title</Form.Label>
@@ -79,6 +108,7 @@ const AddEditModal = ({ show, handleClose, editData }) => {
               value={form.title}
               onChange={handleChange}
               required
+              placeholder="Type a name of you memory"
             />
           </Form.Group>
 
@@ -90,6 +120,7 @@ const AddEditModal = ({ show, handleClose, editData }) => {
               value={form.description}
               onChange={handleChange}
               required
+              placeholder="Describe your memory in detail..."
             />
           </Form.Group>
 
@@ -100,6 +131,7 @@ const AddEditModal = ({ show, handleClose, editData }) => {
               value={form.location}
               onChange={handleChange}
               required
+              placeholder="Where was this memory captured?"
             />
           </Form.Group>
 
@@ -117,11 +149,18 @@ const AddEditModal = ({ show, handleClose, editData }) => {
         </Form>
       </Modal.Body>
 
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+      <Modal.Footer className="glass-footer">
+        <Button
+          variant="secondary"
+          onClick={handleClose}
+          className="glass-btn secondary"
+        >
           Close
         </Button>
-        <Button onClick={handleSubmit}>{editData ? "Update" : "Create"}</Button>
+
+        <Button onClick={handleSubmit} className="glass-btn primary">
+          {editData ? "Update" : "Create"}
+        </Button>
       </Modal.Footer>
     </Modal>
   );
