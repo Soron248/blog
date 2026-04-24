@@ -1,24 +1,39 @@
 .glass-card {
   backdrop-filter: blur(16px);
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
+  border-radius: 15px;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 16px;
+  padding: 5px 10px;
   color: white;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.174);
+}
+.mainGlass {
   transition: 0.3s;
+  cursor: pointer;
 }
 
-.glass-card:hover {
+.mainGlass:hover {
   transform: translateY(-5px);
 }
 
-.glass-btn {
+.glass-btn1 {
   backdrop-filter: blur(10px);
-  background: rgba(0, 123, 255, 0.3);
+  background: rgba(160, 162, 165, 0.397);
   border: none;
-  padding: 8px 14px;
-  border-radius: 12px;
+  padding: 2px 15px;
+  border-radius: 15px;
   color: white;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.174);
+}
+
+.glass-btn2 {
+  backdrop-filter: blur(10px);
+  background: rgb(255, 255, 255);
+  border: none;
+  padding: 2px 15px;
+  border-radius: 15px;
+  color: red;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.174);
 }
 
 .floating-btn {
@@ -44,4 +59,83 @@
 
 .floating-btn:hover {
   transform: scale(1.1);
+}
+
+.glass-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.glass-popup {
+  padding: 20px 25px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  text-align: center;
+  min-width: 240px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: pop 0.2s ease-in-out;
+}
+
+.glass-popup p {
+  margin-bottom: 15px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.glass-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.glass-cancel,
+.glass-delete {
+  padding: 6px 14px;
+  border-radius: 10px;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.glass-cancel {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.glass-delete {
+  background: rgba(255, 0, 80, 0.6);
+  color: white;
+}
+
+.glass-cancel:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.glass-delete:hover {
+  background: rgba(255, 0, 80, 0.8);
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

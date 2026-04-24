@@ -45,7 +45,7 @@ const BlogList = () => {
 
         {loading ? (
           <div className="row">
-            {[...Array(6)].map((_, i) => (
+            {blogs.map((_, i) => (
               <div className="col-md-4 mb-3" key={i}>
                 <div className="skeleton-card"></div>
               </div>
