@@ -14,6 +14,7 @@ const BlogCard = ({ blog, onEdit }) => {
 
   const isLong = blog.description?.length > 80;
 
+  // old img from local storage
   const imageUrl = blog.imagePath
     ? `${process.env.REACT_APP_BASE_URL}/${blog.imagePath}`
     : null;
@@ -52,7 +53,7 @@ const BlogCard = ({ blog, onEdit }) => {
 
         {imageUrl && (
           <img
-            src={imageUrl}
+            src={blog.imagePath}
             alt="blog"
             loading="lazy"
             style={{ width: "100%", borderRadius: "15px", display: "block" }}
