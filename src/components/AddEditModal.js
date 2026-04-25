@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createBlog, updateBlog } from "../features/blog/blogSlice";
 import { toast } from "react-toastify";
+import imageCompression from "browser-image-compression";
 
 const AddEditModal = ({ show, handleClose, editData }) => {
   const dispatch = useDispatch();
-
+const {  loading } = useSelector((state) => state.blog);
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -14,13 +15,17 @@ const AddEditModal = ({ show, handleClose, editData }) => {
     image: null,
   });
   const [preview, setPreview] = useState(null);
-  const titles = [
-    "Wow, you again? Let’s save another memory ✨",
-    "Captured another beautiful moment 📸",
-    "Alright, let’s store something special 💙",
-    "Another story coming alive... 🌿",
-    "Let’s freeze this moment in time ⏳",
-  ];
+
+  const titles = useMemo(
+    () => [
+      "Wow, you again? Let's save another memory ✨",
+      "Captured another beautiful moment 📸",
+      "Alright, let's store something special 💙",
+      "Another story coming alive... 🌿",
+      "Let's freeze this moment in time ⏳",
+    ],
+    [],
+  );
 
   const [modalTitle, setModalTitle] = useState("");
 
@@ -32,13 +37,13 @@ const AddEditModal = ({ show, handleClose, editData }) => {
         location: editData.location,
         image: null,
       });
-    }else{
+    } else {
       setForm({
-          title: "",
-          description: "",
-          location: "",
-          image: null,
-        });
+        title: "",
+        description: "",
+        location: "",
+        image: null,
+      });
     }
   }, [editData]);
 
@@ -47,14 +52,31 @@ const AddEditModal = ({ show, handleClose, editData }) => {
       const random = titles[Math.floor(Math.random() * titles.length)];
       setModalTitle(random);
     }
-  }, [show]);
+  }, [show, titles]);
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value, files } = e.target;
+
     if (name === "image") {
       const file = files[0];
-      setForm({ ...form, image: file });
-      setPreview(URL.createObjectURL(file));
+      if (!file) return;
+
+      // Compress options
+      const options = {
+        maxSizeMB: 1, // 1MB এর বেশি হলে compress
+        useWebWorker: true, // smooth experience
+        initialQuality: 0.8, // 80% quality — size কমবে, দেখতে same ✅
+      };
+
+      try {
+        const compressedFile = await imageCompression(file, options);
+        setForm({ ...form, image: compressedFile });
+        setPreview(URL.createObjectURL(compressedFile));
+      } catch (error) {
+        // Compress fail হলে original file use করো
+        setForm({ ...form, image: file });
+        setPreview(URL.createObjectURL(file));
+      }
     } else {
       setForm({ ...form, [name]: value });
     }
@@ -166,7 +188,7 @@ const AddEditModal = ({ show, handleClose, editData }) => {
         </Button>
 
         <Button onClick={handleSubmit} className="glass-btn primary">
-          {editData ? "Update" : "Create"}
+          {loading ? "Saving..." : editData ? "Update" : "Save"}
         </Button>
       </Modal.Footer>
     </Modal>

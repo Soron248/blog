@@ -52,14 +52,28 @@ const blogSlice = createSlice({
       })
 
       // CREATE
+      .addCase(createBlog.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(createBlog.fulfilled, (state, action) => {
         state.blogs.unshift(action.payload);
+        state.loading = false; // ✅
+      })
+      .addCase(createBlog.rejected, (state) => {
+        state.loading = false;
       })
 
       // UPDATE
+      .addCase(updateBlog.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(updateBlog.fulfilled, (state, action) => {
         const index = state.blogs.findIndex((b) => b.id === action.payload.id);
         if (index !== -1) state.blogs[index] = action.payload;
+        state.loading = false; // ✅
+      })
+      .addCase(updateBlog.rejected, (state) => {
+        state.loading = false;
       })
 
       // DELETE

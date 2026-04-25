@@ -5,6 +5,7 @@ import BlogCard from "./BlogCard";
 import AddEditModal from "./AddEditModal";
 import bg from "../assets/bg2.jpg";
 import MasonryGrid from "./MasonryGrid";
+import Masonry from "react-masonry-css";
 
 const BlogList = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,14 @@ const BlogList = () => {
   const handleEdit = (blog) => {
     setEditData(blog);
     setShow(true);
+  };
+
+  const breakpointColumns = {
+    default: 5,
+    1100: 4,
+    768: 3,
+    500: 2,
+    300: 1,
   };
 
   return (
@@ -54,13 +63,15 @@ const BlogList = () => {
               ))}
             </div>
           ) : (
-            <MasonryGrid gap={16}>
+            <Masonry
+              breakpointCols={breakpointColumns}
+              className="masonry-grid"
+              columnClassName="masonry-column"
+            >
               {blogs?.map((blog) => (
-                <div key={blog.id}>
-                  <BlogCard blog={blog} onEdit={handleEdit} />
-                </div>
+                <BlogCard key={blog.id} blog={blog} onEdit={handleEdit} />
               ))}
-            </MasonryGrid>
+            </Masonry>
           )}
         </div>
 

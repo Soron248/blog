@@ -40,15 +40,20 @@ const BlogCard = ({ blog, onEdit }) => {
   };
 
   return (
-    <>
+    <div>
       <div className="mainGlass mt-3">
         {/* place the location top right side of the card */}
         <h6
           className="glass-card d-flex align-items-center gap-1 ms-auto mb-1"
-          style={{ width: "fit-content", fontSize: "12px", padding: "2px 5px" }}
+          style={{
+            width: "fit-content",
+            fontSize: "12px",
+            padding: "2px 5px",
+            backgroundColor: "rgba(255, 226, 226, 0.58)",
+          }}
         >
-          <IoLocationSharp />
-          {blog.location}
+          <IoLocationSharp color="red" />
+          <span style={{ color: "black" }}>{blog.location}</span>
         </h6>
 
         {imageUrl && (
@@ -129,7 +134,7 @@ const BlogCard = ({ blog, onEdit }) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
