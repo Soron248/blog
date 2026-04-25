@@ -66,9 +66,9 @@ const BlogCard = ({ blog, onEdit }) => {
         )}
 
         <div className="glass-card mt-1">
-          <h4 style={{ fontWeight: "600" }}>{blog.title}</h4>
+          <h6 style={{ fontWeight: "600" }}>{blog.title}</h6>
 
-          <p style={{ color: "lightGray" }}>
+          <p style={{ color: "lightGray", fontSize: "13px" }}>
             {expanded || !isLong
               ? blog.description
               : `${blog.description.slice(0, 80)}...`}
