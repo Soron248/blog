@@ -4,6 +4,7 @@ import { fetchBlogs } from "../features/blog/blogSlice";
 import BlogCard from "./BlogCard";
 import AddEditModal from "./AddEditModal";
 import bg from "../assets/bg2.jpg";
+import MasonryGrid from "./MasonryGrid";
 
 const BlogList = () => {
   const dispatch = useDispatch();
@@ -27,39 +28,41 @@ const BlogList = () => {
   };
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        backgroundImage: `url(${bg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      {/* Your real UI */}
-      <div className="container mt-3 ">
-        {/* Top Left Button */}
-        <span className="floating-btn" onClick={handleAdd}>
-         +
-        </span>
+    <>
+      {/* ✅ BACKGROUND LAYER */}
+      <div
+        className="bg-layer"
+        style={{
+          backgroundImage: `url(${bg})`,
+        }}
+      />
 
-        {loading ? (
-          <div className="row">
-            {blogs.map((_, i) => (
-              <div className="col-md-4 mb-3" key={i}>
-                <div className="skeleton-card"></div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="row">
-            {blogs.map((blog) => (
-              <div className="col-md-4 col-sm-6 mb-3" key={blog.id}>
-                <BlogCard blog={blog} onEdit={handleEdit} />
-              </div>
-            ))}
-          </div>
-        )}
+      {/* ✅ MAIN CONTENT (SCROLLABLE) */}
+      <div className="app-content">
+        <div className="container py-3">
+          {/* Floating Button */}
+          <span className="floating-btn" onClick={handleAdd}>
+            +
+          </span>
+
+          {loading ? (
+            <div className="row">
+              {[...Array(6)].map((_, i) => (
+                <div className="col-md-3 mb-3" key={i}>
+                  <div className="skeleton-card"></div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <MasonryGrid gap={16}>
+              {blogs?.map((blog) => (
+                <div key={blog.id}>
+                  <BlogCard blog={blog} onEdit={handleEdit} />
+                </div>
+              ))}
+            </MasonryGrid>
+          )}
+        </div>
 
         <AddEditModal
           show={show}
@@ -67,7 +70,7 @@ const BlogList = () => {
           editData={editData}
         />
       </div>
-    </div>
+    </>
   );
 };
 

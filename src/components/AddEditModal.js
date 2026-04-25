@@ -32,6 +32,13 @@ const AddEditModal = ({ show, handleClose, editData }) => {
         location: editData.location,
         image: null,
       });
+    }else{
+      setForm({
+          title: "",
+          description: "",
+          location: "",
+          image: null,
+        });
     }
   }, [editData]);
 

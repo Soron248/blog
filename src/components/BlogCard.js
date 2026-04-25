@@ -10,6 +10,10 @@ const BlogCard = ({ blog, onEdit }) => {
   const dispatch = useDispatch();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [expanded, setExpanded] = useState(false);
+
+  const isLong = blog.description?.length > 80;
+
   const imageUrl = blog.imagePath
     ? `${process.env.REACT_APP_BASE_URL}/${blog.imagePath}`
     : null;
@@ -27,17 +31,20 @@ const BlogCard = ({ blog, onEdit }) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
 
-    const options = { day: "2-digit", month: "short", year: "2-digit" };
-    return date.toLocaleDateString("en-GB", options);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = date.toLocaleString("en-GB", { month: "short" });
+    const year = date.getFullYear();
+
+    return `${day} ${month}, ${year}`;
   };
 
   return (
     <>
-      <div className="mainGlass">
+      <div className="mainGlass mt-3">
         {/* place the location top right side of the card */}
         <h6
           className="glass-card d-flex align-items-center gap-1 ms-auto mb-1"
-          style={{ width: "fit-content" }}
+          style={{ width: "fit-content", fontSize: "12px", padding: "2px 5px" }}
         >
           <IoLocationSharp />
           {blog.location}
@@ -47,25 +54,49 @@ const BlogCard = ({ blog, onEdit }) => {
           <img
             src={imageUrl}
             alt="blog"
-            style={{ width: "100%", borderRadius: "15px",boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)" }}
+            loading="lazy"
+            style={{ width: "100%", borderRadius: "15px", display: "block" }}
           />
         )}
 
         <div className="glass-card mt-1">
           <h4 style={{ fontWeight: "600" }}>{blog.title}</h4>
 
-          <p style={{ color: "lightGray" }}>{blog.description}</p>
-
+          <p style={{ color: "lightGray" }}>
+            {expanded || !isLong
+              ? blog.description
+              : `${blog.description.slice(0, 80)}...`}
+            {isLong && (
+              <span
+                onClick={() => setExpanded(!expanded)}
+                style={{
+                  color: "whiteSmoke",
+                  cursor: "pointer",
+                  fontSize: "11px",
+                  marginLeft: "4px",
+                }}
+              >
+                {expanded ? " show less" : " read more"}
+              </span>
+            )}
+          </p>
           <span
             className="d-flex align-items-center ms-auto"
-            style={{ width: "fit-content", fontSize: "11px" }}
+            style={{
+              width: "fit-content",
+              fontSize: "11px",
+              color: "whiteSmoke",
+            }}
           >
             {formatDate(blog.createdAt)}
           </span>
         </div>
 
         <div className="d-flex gap-2 mt-1">
-          <span className="glass-btn1 d-flex align-items-center justify-content-center" onClick={() => onEdit(blog)}>
+          <span
+            className="glass-btn1 d-flex align-items-center justify-content-center"
+            onClick={() => onEdit(blog)}
+          >
             <MdModeEdit size={20} />
           </span>
           <span
@@ -77,23 +108,26 @@ const BlogCard = ({ blog, onEdit }) => {
         </div>
       </div>
 
-{showDeleteModal && (
-  <div className="glass-overlay">
-    <div className="glass-popup">
-      <p>Are you sure you want to delete?</p>
+      {showDeleteModal && (
+        <div className="glass-overlay">
+          <div className="glass-popup">
+            <p>Are you sure you want to delete?</p>
 
-      <div className="glass-actions">
-        <button className="glass-cancel" onClick={() => setShowDeleteModal(false)}>
-          Cancel
-        </button>
+            <div className="glass-actions">
+              <button
+                className="glass-cancel"
+                onClick={() => setShowDeleteModal(false)}
+              >
+                Cancel
+              </button>
 
-        <button className="glass-delete" onClick={confirmDelete}>
-          Delete
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+              <button className="glass-delete" onClick={confirmDelete}>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

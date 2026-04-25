@@ -38,8 +38,8 @@
 
 .floating-btn {
   position: fixed;
-  top: 20px;
-  left: 20px;
+  top: 10px;
+  left: 10px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
