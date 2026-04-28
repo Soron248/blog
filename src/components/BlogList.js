@@ -6,11 +6,13 @@ import AddEditModal from "./AddEditModal";
 import bg from "../assets/bg2.jpg";
 import MasonryGrid from "./MasonryGrid";
 import Masonry from "react-masonry-css";
+import { useNavigate } from "react-router-dom";
+import { clearToken } from "../utils/auth";
 
 const BlogList = () => {
   const dispatch = useDispatch();
   const { blogs, loading } = useSelector((state) => state.blog);
-
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [editData, setEditData] = useState(null);
 
@@ -26,6 +28,11 @@ const BlogList = () => {
   const handleEdit = (blog) => {
     setEditData(blog);
     setShow(true);
+  };
+
+  const handleLogout = () => {
+    clearToken();
+    navigate("/login");
   };
 
   const breakpointColumns = {
@@ -50,9 +57,18 @@ const BlogList = () => {
       <div className="app-content">
         <div className="container py-3">
           {/* Floating Button */}
+                    <button
+            className="floating-btn2"
+            onClick={handleLogout}
+          >
+            ⎋
+          </button>
+          
           <span className="floating-btn" onClick={handleAdd}>
             +
           </span>
+
+
 
           {loading ? (
             <div className="row">
